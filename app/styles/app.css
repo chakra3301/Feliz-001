@@ -1,3 +1,23 @@
+/* Import custom fonts */
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=instrument-serif@400,400-italic&display=swap');
+
+/* Custom CP_Font for titles */
+@font-face {
+  font-family: 'CP_Font';
+  src: url('/CP_Font.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CP_Font';
+  src: url('/CP_Font_2.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --aside-width: 400px;
   --cart-aside-summary-height-with-discount: 300px;
@@ -6,6 +26,44 @@
   --header-height: 64px;
   --color-dark: #000;
   --color-light: #fff;
+  --color-primary: 10 10 10; /* Dark text on light */
+  --color-contrast: 255 255 255; /* Light background */
+  --color-accent: 139 92 246; /* Violet-500 */
+  --font-size-fine: 0.75rem;
+  --font-size-copy: 1rem;
+  --font-size-lead: 1.125rem;
+  --font-size-heading: 2.5rem;
+  --font-size-display: 4rem;
+  --color-shop-pay: #5a31f4;
+  --shop-pay-button--width: 100%;
+  --height-nav: 4rem;
+  --screen-height: 100vh;
+  --screen-height-dynamic: 100vh;
+
+  @media (min-width: 48em) {
+    --height-nav: 5rem;
+    --font-size-heading: 3rem;
+    --font-size-display: 5rem;
+  }
+  @media (min-width: 64em) {
+    --font-size-display: 6rem;
+  }
+  @supports (height: 100svh) {
+    --screen-height: 100svh;
+  }
+  @supports (height: 100dvh) {
+    --screen-height-dynamic: 100dvh;
+  }
+}
+
+/* Custom cursor */
+*, *::before, *::after {
+  cursor: url('/cursor.png'), auto;
+}
+
+a, button, [role="button"], input[type="submit"], input[type="button"],
+label, select, .cursor-pointer {
+  cursor: url('/cursor.png'), pointer;
 }
 
 img {
@@ -42,6 +100,7 @@ aside {
   right: calc(-1 * var(--aside-width));
   top: 0;
   transition: transform 200ms ease-in-out;
+  z-index: 50;
 }
 
 aside header {
@@ -102,7 +161,7 @@ aside li {
   transition: opacity 400ms ease-in-out;
   transition: opacity 400ms;
   visibility: hidden;
-  z-index: 10;
+  z-index: 50;
 }
 
 .overlay .close-outside {

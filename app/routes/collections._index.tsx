@@ -1,8 +1,9 @@
-import {useLoaderData, Link} from 'react-router';
+import {useLoaderData} from 'react-router';
 import type {Route} from './+types/collections._index';
-import {getPaginationVariables, Image} from '@shopify/hydrogen';
+import {getPaginationVariables} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import {CollectionCard} from '~/components/CollectionCard';
 
 export async function loader(args: Route.LoaderArgs) {
   // Start fetching non-critical data without blocking time to first byte
@@ -46,49 +47,23 @@ export default function Collections() {
   const {collections} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collections">
-      <h1>Collections</h1>
-      <PaginatedResourceSection<CollectionFragment>
-        connection={collections}
-        resourcesClassName="collections-grid"
-      >
-        {({node: collection, index}) => (
-          <CollectionItem
-            key={collection.id}
-            collection={collection}
-            index={index}
-          />
-        )}
-      </PaginatedResourceSection>
+    <div className="min-h-screen bg-white">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <h1 className="mb-8 text-3xl font-bold text-gray-900">Collections</h1>
+        <PaginatedResourceSection<CollectionFragment>
+          connection={collections}
+          resourcesClassName="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {({node: collection, index}) => (
+            <CollectionCard
+              key={collection.id}
+              collection={collection}
+              index={index}
+            />
+          )}
+        </PaginatedResourceSection>
+      </div>
     </div>
-  );
-}
-
-function CollectionItem({
-  collection,
-  index,
-}: {
-  collection: CollectionFragment;
-  index: number;
-}) {
-  return (
-    <Link
-      className="collection-item"
-      key={collection.id}
-      to={`/collections/${collection.handle}`}
-      prefetch="intent"
-    >
-      {collection?.image && (
-        <Image
-          alt={collection.image.altText || collection.title}
-          aspectRatio="1/1"
-          data={collection.image}
-          loading={index < 3 ? 'eager' : undefined}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      )}
-      <h5>{collection.title}</h5>
-    </Link>
   );
 }
 

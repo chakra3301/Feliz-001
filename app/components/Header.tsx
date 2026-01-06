@@ -1,5 +1,5 @@
-import {Suspense} from 'react';
-import {Await, NavLink, useAsyncValue} from 'react-router';
+import {Suspense, useState} from 'react';
+import {Await, NavLink, useAsyncValue, Link, useLocation} from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -24,19 +24,95 @@ export function Header({
   publicStoreDomain,
 }: HeaderProps) {
   const {shop, menu} = header;
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  const [isHoveringHeader, setIsHoveringHeader] = useState(false);
+  const {open} = useAside();
+
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-    </header>
+    <>
+      <header
+        role="banner"
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+          isHome
+            ? 'bg-transparent hover:bg-white/90 hover:backdrop-blur-xl'
+            : 'bg-white/90 backdrop-blur-xl border-b border-neutral-200/50'
+        }`}
+        onMouseEnter={() => setIsHoveringHeader(true)}
+        onMouseLeave={() => setIsHoveringHeader(false)}
+      >
+        <div className="w-full px-6 py-4">
+          {/* Top row - Cart icon on right */}
+          <div className="flex items-center justify-end mb-2 lg:mb-0 lg:absolute lg:right-6 lg:top-4 lg:z-10">
+            <div className="flex items-center gap-2">
+              {/* Cart */}
+              <CartCount cart={cart} openCart={() => open('cart')} />
+            </div>
+          </div>
+
+          {/* Centered Logo with characters */}
+          <div className="flex flex-col items-center">
+            <Link
+              to="/"
+              className="flex items-center justify-center gap-8 md:gap-12 lg:gap-16"
+              prefetch="intent"
+            >
+              <img 
+                src="/left.png" 
+                alt="" 
+                className="h-20 md:h-28 lg:h-36 w-auto"
+              />
+              <img 
+                src="/feliz_.png" 
+                alt={shop.name} 
+                className="h-7 md:h-10 lg:h-12 w-auto"
+              />
+              <img 
+                src="/right.png" 
+                alt="" 
+                className="h-20 md:h-28 lg:h-36 w-auto"
+              />
+            </Link>
+
+            {/* Navigation below logo */}
+            <nav className="flex items-center gap-10 mt-4">
+              <Link
+                to="/"
+                prefetch="intent"
+                className={`font-display text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group ${
+                  !isHoveringHeader ? 'drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]' : ''
+                }`}
+              >
+                Home
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-violet-500 group-hover:w-full transition-all duration-300" />
+              </Link>
+              <Link
+                to="/collections"
+                prefetch="intent"
+                className={`font-display text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group ${
+                  !isHoveringHeader ? 'drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]' : ''
+                }`}
+              >
+                Collections
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-violet-500 group-hover:w-full transition-all duration-300" />
+              </Link>
+              <Link
+                to="/universe"
+                prefetch="intent"
+                className={`font-display text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group ${
+                  !isHoveringHeader ? 'drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]' : ''
+                }`}
+              >
+                Universe
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-violet-500 group-hover:w-full transition-all duration-300" />
+              </Link>
+            </nav>
+          </div>
+        </div>
+      </header>
+      {/* Spacer for fixed header */}
+      {!isHome && <div className="h-36 lg:h-44" />}
+    </>
   );
 }
 
@@ -51,128 +127,86 @@ export function HeaderMenu({
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
-  const className = `header-menu-${viewport}`;
   const {close} = useAside();
 
+  // Custom navigation items
+  const navItems = [
+    {id: 'home', title: 'Home', to: '/'},
+    {id: 'collections', title: 'Collections', to: '/collections'},
+    {id: 'universe', title: 'Universe', to: '/universe'},
+  ];
+
   return (
-    <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
+    <nav className="grid gap-6 p-6">
+      {navItems.map((item, index) => (
+        <Link
+          key={item.id}
+          to={item.to}
           onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
+          className="text-2xl font-display tracking-[0.1em] uppercase text-neutral-900 hover:text-violet-600 transition-colors"
+          style={{animationDelay: `${index * 50}ms`}}
         >
-          Home
-        </NavLink>
-      )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
-
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={close}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
+          {item.title}
+        </Link>
+      ))}
     </nav>
   );
 }
 
-function HeaderCtas({
-  isLoggedIn,
+function CartCount({
   cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+  openCart,
+}: {
+  cart: Promise<CartApiQueryFragment | null>;
+  openCart: () => void;
+}) {
   return (
-    <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        <Suspense fallback="Sign in">
-          <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
-          </Await>
-        </Suspense>
-      </NavLink>
-      <SearchToggle />
-      <CartToggle cart={cart} />
-    </nav>
-  );
-}
-
-function HeaderMenuMobileToggle() {
-  const {open} = useAside();
-  return (
-    <button
-      className="header-menu-mobile-toggle reset"
-      onClick={() => open('mobile')}
-    >
-      <h3>☰</h3>
-    </button>
-  );
-}
-
-function SearchToggle() {
-  const {open} = useAside();
-  return (
-    <button className="reset" onClick={() => open('search')}>
-      Search
-    </button>
-  );
-}
-
-function CartBadge({count}: {count: number | null}) {
-  const {open} = useAside();
-  const {publish, shop, cart, prevCart} = useAnalytics();
-
-  return (
-    <a
-      href="/cart"
-      onClick={(e) => {
-        e.preventDefault();
-        open('cart');
-        publish('cart_viewed', {
-          cart,
-          prevCart,
-          shop,
-          url: window.location.href || '',
-        } as CartViewPayload);
-      }}
-    >
-      Cart {count === null ? <span>&nbsp;</span> : count}
-    </a>
-  );
-}
-
-function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
-  return (
-    <Suspense fallback={<CartBadge count={null} />}>
+    <Suspense fallback={<CartBadge count={0} openCart={openCart} />}>
       <Await resolve={cart}>
-        <CartBanner />
+        {(cart) => (
+          <CartBadge count={cart?.totalQuantity || 0} openCart={openCart} />
+        )}
       </Await>
     </Suspense>
   );
 }
 
-function CartBanner() {
-  const originalCart = useAsyncValue() as CartApiQueryFragment | null;
-  const cart = useOptimisticCart(originalCart);
-  return <CartBadge count={cart?.totalQuantity ?? 0} />;
+function CartBadge({
+  count,
+  openCart,
+}: {
+  count: number;
+  openCart: () => void;
+}) {
+  const {publish, shop, cart, prevCart} = useAnalytics();
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    openCart();
+    publish('cart_viewed', {
+      cart,
+      prevCart,
+      shop,
+      url: window.location.href || '',
+    } as CartViewPayload);
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      className="relative flex items-center justify-center w-10 h-10 text-neutral-500 hover:text-violet-600 transition-colors"
+      aria-label={`Cart (${count} items)`}
+    >
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+      </svg>
+      {count > 0 && (
+        <span className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-violet-600 text-white text-[10px] font-medium rounded-full">
+          {count > 9 ? '9+' : count}
+        </span>
+      )}
+    </button>
+  );
 }
 
 const FALLBACK_HEADER_MENU = {

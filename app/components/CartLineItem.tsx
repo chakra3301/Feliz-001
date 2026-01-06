@@ -26,19 +26,22 @@ export function CartLineItem({
   const {close} = useAside();
 
   return (
-    <li key={id} className="cart-line">
+    <div className="flex gap-4">
       {image && (
-        <Image
-          alt={title}
-          aspectRatio="1/1"
-          data={image}
-          height={100}
-          loading="lazy"
-          width={100}
-        />
+        <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md">
+          <Image
+            alt={title}
+            aspectRatio="1/1"
+            data={image}
+            height={80}
+            loading="lazy"
+            width={80}
+            className="h-full w-full object-cover"
+          />
+        </div>
       )}
 
-      <div>
+      <div className="flex flex-1 flex-col">
         <Link
           prefetch="intent"
           to={lineItemUrl}
@@ -47,24 +50,27 @@ export function CartLineItem({
               close();
             }
           }}
+          className="font-medium text-gray-900 hover:text-gray-700"
         >
-          <p>
-            <strong>{product.title}</strong>
-          </p>
+          {product.title}
         </Link>
-        <ProductPrice price={line?.cost?.totalAmount} />
-        <ul>
-          {selectedOptions.map((option) => (
-            <li key={option.name}>
-              <small>
+        {selectedOptions.length > 0 && (
+          <ul className="mt-1 space-y-0.5">
+            {selectedOptions.map((option) => (
+              <li key={option.name} className="text-sm text-gray-500">
                 {option.name}: {option.value}
-              </small>
-            </li>
-          ))}
-        </ul>
-        <CartLineQuantity line={line} />
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="mt-2">
+          <ProductPrice price={line?.cost?.totalAmount} />
+        </div>
+        <div className="mt-3">
+          <CartLineQuantity line={line} />
+        </div>
       </div>
-    </li>
+    </div>
   );
 }
 
@@ -80,30 +86,35 @@ function CartLineQuantity({line}: {line: CartLine}) {
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
-    <div className="cart-line-quantity">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
-      <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
-        <button
-          aria-label="Decrease quantity"
-          disabled={quantity <= 1 || !!isOptimistic}
-          name="decrease-quantity"
-          value={prevQuantity}
-        >
-          <span>&#8722; </span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
-      <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
-        <button
-          aria-label="Increase quantity"
-          name="increase-quantity"
-          value={nextQuantity}
-          disabled={!!isOptimistic}
-        >
-          <span>&#43;</span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-gray-600">Quantity:</span>
+      <div className="flex items-center gap-1 rounded-md border border-gray-300">
+        <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
+          <button
+            aria-label="Decrease quantity"
+            disabled={quantity <= 1 || !!isOptimistic}
+            name="decrease-quantity"
+            value={prevQuantity}
+            className="px-2 py-1 text-gray-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <span>&#8722;</span>
+          </button>
+        </CartLineUpdateButton>
+        <span className="min-w-[2rem] text-center text-sm font-medium">
+          {quantity}
+        </span>
+        <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
+          <button
+            aria-label="Increase quantity"
+            name="increase-quantity"
+            value={nextQuantity}
+            disabled={!!isOptimistic}
+            className="px-2 py-1 text-gray-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <span>&#43;</span>
+          </button>
+        </CartLineUpdateButton>
+      </div>
       <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
     </div>
   );
@@ -128,7 +139,11 @@ function CartLineRemoveButton({
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button disabled={disabled} type="submit">
+      <button
+        disabled={disabled}
+        type="submit"
+        className="ml-auto text-sm text-red-600 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+      >
         Remove
       </button>
     </CartForm>
