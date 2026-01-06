@@ -54,12 +54,13 @@ export default function Homepage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden w-full">
+      <section className="relative h-screen flex items-center justify-center overflow-hidden" style={{width: '100vw', marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)'}}>
         {/* Banner Image Background */}
         <img
           src="/head.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
+          style={{width: '100%', height: '100%', objectFit: 'cover'}}
         />
         
         {/* Top fade gradient - seamless white fade */}
@@ -110,8 +111,8 @@ export default function Homepage() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-24 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 bg-white">
+        <div className="w-full px-6">
           <PaginatedResourceSection<ProductItemFragment>
             connection={data.products}
             resourcesClassName="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
