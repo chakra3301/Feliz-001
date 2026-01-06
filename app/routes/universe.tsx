@@ -76,17 +76,20 @@ export default function UniversePage() {
       </section>
 
       {/* Footer CTA */}
-      <section className="py-16 px-6 bg-neutral-900 text-white">
+      <section className="py-16 px-6 bg-gradient-to-b from-yellow-400 via-yellow-200 to-white" style={{width: '100vw', marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)'}}>
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-display text-3xl md:text-4xl mb-4">
+          <h2 className="font-display text-3xl md:text-4xl mb-4 text-neutral-900">
             Ready to explore?
           </h2>
-          <p className="text-neutral-400 mb-8">
-            Now that you've met the crew, it's time to discover what treasures await.
+          <p className="text-neutral-700 mb-8">
+            Now that you've tapped in to the gang, it's time to discover what swag awaits.
           </p>
           <a
             href="/"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-violet-600 text-white text-sm tracking-[0.2em] uppercase font-medium hover:bg-violet-500 transition-all duration-300"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-[#069ef2] text-white text-sm tracking-[0.2em] uppercase font-medium hover:bg-[#0590e0] transition-all duration-300 rounded-md"
+            style={{
+              boxShadow: '0 0 20px rgba(6, 158, 242, 0.5), 0 0 40px rgba(6, 158, 242, 0.3)',
+            }}
           >
             <span>Shop Now</span>
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
