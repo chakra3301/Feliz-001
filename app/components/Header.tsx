@@ -41,9 +41,9 @@ export function Header({
         onMouseEnter={() => setIsHoveringHeader(true)}
         onMouseLeave={() => setIsHoveringHeader(false)}
       >
-        <div className="w-full px-6 py-4">
+        <div className="w-full px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 max-w-full overflow-hidden">
           {/* Top row - Cart icon on right */}
-          <div className="flex items-center justify-end mb-2 lg:mb-0 lg:absolute lg:right-6 lg:top-4 lg:z-10">
+          <div className="flex items-center justify-end mb-1 sm:mb-2 lg:mb-0 lg:absolute lg:right-6 lg:top-4 lg:z-10">
             <div className="flex items-center gap-2">
               {/* Cart */}
               <CartCount cart={cart} openCart={() => open('cart')} />
@@ -54,32 +54,32 @@ export function Header({
           <div className="flex flex-col items-center">
             <Link
               to="/"
-              className="flex items-center justify-center gap-8 md:gap-12 lg:gap-16"
+              className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 lg:gap-12 xl:gap-16 max-w-full"
               prefetch="intent"
             >
               <img 
                 src="/left.png" 
                 alt="" 
-                className="h-20 md:h-28 lg:h-36 w-auto"
+                className="h-12 sm:h-16 md:h-20 lg:h-28 xl:h-36 w-auto max-w-[30%] object-contain"
               />
               <img 
                 src="/feliz_.png" 
                 alt={shop.name} 
-                className="h-7 md:h-10 lg:h-12 w-auto"
+                className="h-5 sm:h-6 md:h-7 lg:h-10 xl:h-12 w-auto max-w-[25%] object-contain"
               />
               <img 
                 src="/right.png" 
                 alt="" 
-                className="h-20 md:h-28 lg:h-36 w-auto"
+                className="h-12 sm:h-16 md:h-20 lg:h-28 xl:h-36 w-auto max-w-[30%] object-contain"
               />
             </Link>
 
-            {/* Navigation below logo */}
-            <nav className="flex items-center gap-10 mt-4">
+            {/* Navigation below logo - hidden on mobile, shown on tablet+ */}
+            <nav className="hidden sm:flex items-center gap-4 md:gap-6 lg:gap-10 mt-2 sm:mt-3 md:mt-4 flex-wrap justify-center">
               <Link
                 to="/"
                 prefetch="intent"
-                className={`font-display text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group ${
+                className={`font-display text-sm sm:text-base md:text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group whitespace-nowrap ${
                   !isHoveringHeader ? 'drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]' : ''
                 }`}
               >
@@ -89,7 +89,7 @@ export function Header({
               <Link
                 to="/collections"
                 prefetch="intent"
-                className={`font-display text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group ${
+                className={`font-display text-sm sm:text-base md:text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group whitespace-nowrap ${
                   !isHoveringHeader ? 'drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]' : ''
                 }`}
               >
@@ -99,7 +99,7 @@ export function Header({
               <Link
                 to="/universe"
                 prefetch="intent"
-                className={`font-display text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group ${
+                className={`font-display text-sm sm:text-base md:text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group whitespace-nowrap ${
                   !isHoveringHeader ? 'drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]' : ''
                 }`}
               >
@@ -111,7 +111,7 @@ export function Header({
         </div>
       </header>
       {/* Spacer for fixed header */}
-      {!isHome && <div className="h-36 lg:h-44" />}
+      {!isHome && <div className="h-24 sm:h-28 md:h-32 lg:h-36 xl:h-44" />}
     </>
   );
 }
