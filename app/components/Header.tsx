@@ -96,7 +96,8 @@ export function Header({
                 Collections
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-violet-500 group-hover:w-full transition-all duration-300" />
               </Link>
-              <Link
+              {/* Universe link hidden for now - route still exists at /universe */}
+              {/* <Link
                 to="/universe"
                 prefetch="intent"
                 className={`font-display text-sm sm:text-base md:text-lg tracking-[0.15em] uppercase text-neutral-800 hover:text-violet-600 transition-all duration-300 relative group whitespace-nowrap ${
@@ -105,7 +106,7 @@ export function Header({
               >
                 Universe
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-violet-500 group-hover:w-full transition-all duration-300" />
-              </Link>
+              </Link> */}
             </nav>
           </div>
         </div>
@@ -133,7 +134,8 @@ export function HeaderMenu({
   const navItems = [
     {id: 'home', title: 'Home', to: '/'},
     {id: 'collections', title: 'Collections', to: '/collections'},
-    {id: 'universe', title: 'Universe', to: '/universe'},
+    // Universe hidden for now - route still exists at /universe
+    // {id: 'universe', title: 'Universe', to: '/universe'},
   ];
 
   return (
