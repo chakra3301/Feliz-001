@@ -2,8 +2,8 @@ import {useLoaderData} from 'react-router';
 import type {Route} from './+types/collections._index';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-import {CollectionCard} from '~/components/CollectionCard';
+import {ProductCard} from '~/components/ProductCard';
+import type {ProductItemFragment} from 'storefrontapi.generated';
 
 export async function loader(args: Route.LoaderArgs) {
   // Start fetching non-critical data without blocking time to first byte
@@ -49,35 +49,71 @@ export default function Collections() {
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <h1 className="mb-8 text-3xl font-bold text-gray-900">Collections</h1>
-        <PaginatedResourceSection<CollectionFragment>
-          connection={collections}
-          resourcesClassName="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
-        >
-          {({node: collection, index}) => (
-            <CollectionCard
-              key={collection.id}
-              collection={collection}
-              index={index}
-            />
-          )}
-        </PaginatedResourceSection>
+        <h1 className="mb-12 text-3xl font-bold text-gray-900">Collections</h1>
+        <div className="space-y-16">
+          {collections.nodes.map((collection) => (
+            <div key={collection.id} className="space-y-6">
+              <h2 className="text-2xl font-bold text-gray-900 border-b border-gray-200 pb-3">
+                {collection.title}
+              </h2>
+              {collection.products && collection.products.nodes.length > 0 ? (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                  {collection.products.nodes.map((product, index) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      loading={index < 4 ? 'eager' : undefined}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500">No products in this collection yet.</p>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
+const PRODUCT_ITEM_FRAGMENT = `#graphql
+  fragment MoneyProductItem on MoneyV2 {
+    amount
+    currencyCode
+  }
+  fragment ProductItem on Product {
+    id
+    handle
+    title
+    featuredImage {
+      id
+      altText
+      url
+      width
+      height
+    }
+    priceRange {
+      minVariantPrice {
+        ...MoneyProductItem
+      }
+      maxVariantPrice {
+        ...MoneyProductItem
+      }
+    }
+  }
+` as const;
+
 const COLLECTIONS_QUERY = `#graphql
+  ${PRODUCT_ITEM_FRAGMENT}
   fragment Collection on Collection {
     id
     title
     handle
-    image {
-      id
-      url
-      altText
-      width
-      height
+    products(first: 20) {
+      nodes {
+        ...ProductItem
+      }
     }
   }
   query StoreCollections(
