@@ -181,7 +181,9 @@ const ALL_PRODUCTS_QUERY = `#graphql
       first: $first,
       last: $last,
       before: $startCursor,
-      after: $endCursor
+      after: $endCursor,
+      sortKey: CREATED_AT,
+      reverse: false
     ) {
       nodes {
         ...ProductItem
