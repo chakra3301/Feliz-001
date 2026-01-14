@@ -52,30 +52,8 @@ export function Header({
 
           {/* Centered Logo with characters */}
           <div className="flex flex-col items-center">
-            <Link
-              to="/"
-              className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 lg:gap-12 xl:gap-16 max-w-full"
-              prefetch="intent"
-            >
-              <img 
-                src="/left.png" 
-                alt="" 
-                className="h-12 sm:h-16 md:h-20 lg:h-28 xl:h-36 w-auto max-w-[30%] object-contain"
-              />
-              <img 
-                src="/feliz_.png" 
-                alt={shop.name} 
-                className="h-5 sm:h-6 md:h-7 lg:h-10 xl:h-12 w-auto max-w-[25%] object-contain"
-              />
-              <img 
-                src="/right.png" 
-                alt="" 
-                className="h-12 sm:h-16 md:h-20 lg:h-28 xl:h-36 w-auto max-w-[30%] object-contain"
-              />
-            </Link>
-
             {/* Social media links */}
-            <div className="flex items-center justify-center gap-3 sm:gap-4 mt-2 sm:mt-3">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 mb-2 sm:mb-3">
               <a 
                 href="https://www.instagram.com/c_feliz_navidad?igsh=MThsempqN2g4MWY0MQ==" 
                 target="_blank" 
@@ -121,6 +99,28 @@ export function Header({
                 </svg>
               </a>
             </div>
+
+            <Link
+              to="/"
+              className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 lg:gap-12 xl:gap-16 max-w-full"
+              prefetch="intent"
+            >
+              <img 
+                src="/left.png" 
+                alt="" 
+                className="h-12 sm:h-16 md:h-20 lg:h-28 xl:h-36 w-auto max-w-[30%] object-contain"
+              />
+              <img 
+                src="/feliz_.png" 
+                alt={shop.name} 
+                className="h-5 sm:h-6 md:h-7 lg:h-10 xl:h-12 w-auto max-w-[25%] object-contain"
+              />
+              <img 
+                src="/right.png" 
+                alt="" 
+                className="h-12 sm:h-16 md:h-20 lg:h-28 xl:h-36 w-auto max-w-[30%] object-contain"
+              />
+            </Link>
 
             {/* Navigation below logo - hidden on mobile, shown on tablet+ */}
             <nav className="hidden sm:flex items-center gap-4 md:gap-6 lg:gap-10 mt-2 sm:mt-3 md:mt-4 flex-wrap justify-center">
