@@ -171,7 +171,7 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
       <a
         href={checkoutUrl}
         target="_self"
-        className="w-full py-4 bg-neutral-900 text-white text-sm tracking-[0.2em] uppercase font-medium text-center hover:bg-violet-600 transition-all duration-500"
+        className="w-full py-4 bg-[#069ef2] text-white text-sm tracking-[0.2em] uppercase font-medium text-center hover:bg-yellow-500 transition-all duration-500"
       >
         Continue to Checkout
       </a>

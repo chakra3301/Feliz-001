@@ -135,17 +135,6 @@ export function Footer({
                   <p className="text-xs text-neutral-400">
                     © {new Date().getFullYear()} Feliz Navidad Store. All rights reserved.
                   </p>
-                  <div className="flex gap-6">
-                    <Link to="/policies/privacy-policy" className="text-xs text-neutral-400 hover:text-violet-600 transition-colors">
-                      Privacy
-                    </Link>
-                    <Link to="/policies/terms-of-service" className="text-xs text-neutral-400 hover:text-violet-600 transition-colors">
-                      Terms
-                    </Link>
-                    <Link to="/policies/shipping-policy" className="text-xs text-neutral-400 hover:text-violet-600 transition-colors">
-                      Shipping
-                    </Link>
-                  </div>
                 </div>
               </div>
             </footer>

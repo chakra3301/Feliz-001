@@ -44,7 +44,7 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
       <a
         href={checkoutUrl}
         target="_self"
-        className="block w-full rounded-md bg-gray-900 px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
+        className="block w-full rounded-md bg-[#069ef2] px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-yellow-500"
       >
         Continue to Checkout →
       </a>
