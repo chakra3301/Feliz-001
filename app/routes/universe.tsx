@@ -25,20 +25,6 @@ const characters = [
     lore: 'Mirror to Lefty, Righty guards the right side with unwavering dedication. Where Lefty blesses quality, Righty bestows style. Together they form an unbreakable duo that ensures every visitor to the store leaves with something special. Righty is more playful than their counterpart, often seen dancing when no one is looking.',
     color: 'yellow',
   },
-  {
-    id: 'sheckleman',
-    name: 'SheckleMan',
-    image: '/jew.png',
-    lore: 'The mysterious SheckleMan appears when you least expect it. A collector of sheckles and spreader of deals, this enigmatic figure pops up to remind you that the best treasures are worth every coin. Some say if you catch him three times in one visit, you unlock a secret discount. Nobody has ever confirmed this.',
-    color: 'emerald',
-  },
-  {
-    id: 'nugget',
-    name: 'Nugget',
-    image: '/nugget.png',
-    lore: 'The party never stops when Nugget is around! This golden bundle of joy lives on the edge of your screen, always ready to celebrate. Click on Nugget and watch the colors fly - a disco of pure happiness. Nugget believes that every purchase deserves a celebration, no matter how small.',
-    color: 'orange',
-  },
 ];
 
 export default function UniversePage() {

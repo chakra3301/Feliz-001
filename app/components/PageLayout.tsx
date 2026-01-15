@@ -9,8 +9,6 @@ import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
-import {SheckleMan} from '~/components/SheckleMan';
-import {Nugget} from '~/components/Nugget';
 import {MovingBanner} from '~/components/MovingBanner';
 
 interface PageLayoutProps {
@@ -49,9 +47,6 @@ export function PageLayout({
         header={header}
         publicStoreDomain={publicStoreDomain}
       />
-      {/* Easter egg characters */}
-      <SheckleMan />
-      <Nugget />
     </Aside.Provider>
   );
 }
